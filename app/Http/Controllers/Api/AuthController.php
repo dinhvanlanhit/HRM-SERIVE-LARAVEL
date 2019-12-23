@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use JWTAuthException;
 use Hash;
+use Illuminate\Support\Facades\Session;
 // use App\Models\Users;
 class AuthController extends Controller
 {   
@@ -15,23 +16,10 @@ class AuthController extends Controller
     public function __construct(User $user){
         $this->user = $user;
     }
-   
-    public function register(Request $request){
-        $user = $this->user->create([
-          'name' => $request->get('name'),
-          'email' => $request->get('email'),
-          'password' => Hash::make($request->get('password'))
-        ]);
-
-        return response()->json([
-            'status'=> 200,
-            'message'=> 'User created successfully',
-            'data'=>$user
-        ]);
-    }
-    
     public function login(Request $request){
-        $credentials = $request->only('email', 'password');
+     
+        $credentials = $request->only('username', 'password');
+    
         $token = null;
         try {
            if (!$token = JWTAuth::attempt($credentials)) {
@@ -45,7 +33,7 @@ class AuthController extends Controller
     }
 
     public function getUserInfo(Request $request){
-        $user = JWTAuth::toUser($request->Token);
-        return response()->json(['result' => $user]);
+
+        return response()->json(JWTAuth::parseToken()->authenticate());
     }
 }  

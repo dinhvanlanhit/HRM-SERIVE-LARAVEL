@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,5 +13,8 @@ use Illuminate\Support\Facades\Crypt;
 */
 
 Route::get('/', function () {
+    Session::put('key','1');
     // return view('welcome');
+    // return 1;
+   return Session::get('key');
 });

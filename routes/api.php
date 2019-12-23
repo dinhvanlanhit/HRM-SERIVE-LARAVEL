@@ -13,17 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api','cors')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api','cors')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 Route::group(['middleware'=>['cors']],function () {
     Route::post('auth/login', 'Api\AuthController@login');
-    Route::get('/users', 'Api\UserController@getUserAll');
-    Route::get('/users/delete/{id?}', 'Api\UserController@userDelete');  
-    
-
     Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('/getUserInfo', 'Api\AuthController@getUserInfo');
+     
     });
 });
