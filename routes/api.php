@@ -21,7 +21,12 @@ use Illuminate\Http\Request;
 Route::group(['middleware'=>['cors']],function () {
     Route::post('auth/login', 'Api\AuthController@login');
     Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::get('/getUserInfo', 'Api\AuthController@getUserInfo');
-     
+        Route::get('/getUserInfo', 'Api\UserController@getUserInfo');
+        Route::prefix('/profile')->group(function () {
+            Route::get('/getProfile', 'Api\ProfileController@getProfile');
+            Route::post('/postUpdateProfile', 'Api\ProfileController@postUpdateProfile');
+            Route::post('/postChangeAvatar', 'Api\ProfileController@postChangeAvatar');
+        });
+
     });
 });

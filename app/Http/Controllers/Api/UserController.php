@@ -8,15 +8,17 @@ use JWTAuth;
 use JWTAuthException;
 use Hash;
 use App\Models\Users;
+use App\Models\UsersInfo;
 
 class UserController extends Controller
-{   
+{
     public function getUserAll(Request $Request)
     {
         return Users::select('id','name','email')->get();
     }
-    public function userDelete(Request $Request,int $id=null)
-    {
-        return Users::where('id','=',$id)->delete();
+    public function getUserInfo(Request $request){
+
+        return  response()->json( Users::find(JWTAuth::parseToken()->authenticate()->id)->users->toArray());
+        // return response()->json(JWTAuth::parseToken()->authenticate()->id);
     }
 }
